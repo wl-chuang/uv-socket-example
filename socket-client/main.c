@@ -34,7 +34,7 @@
 
 static uv_tcp_t      _socket;
 static uv_connect_t  _connect;
-static uv_shutdown_t _shutdown;
+//static uv_shutdown_t _shutdown;
 static uv_timer_t    _pacemaker;
 
 static char* _command = "hello world";
