@@ -1,0 +1,5 @@
+*.o
+output
+socket-server/socket-server
+socket-client/socket-client
+
