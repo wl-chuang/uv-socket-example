@@ -23,53 +23,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-all: lib-uv socket-server socket-client
+CFLAGS  = -Wall -I../libuv-0.9/source/include
+LDFLAGS = -L../output -luv
 
-output:
-	@if [ ! -d "output" ]; then mkdir output; fi
+SOURCE_FILES = main.c loop.c
+OBJECT_FILES = $(SOURCE_FILES:.c=.o)
+TARGET = mq-client
 
-output-clean:
-	rm -rf output
+all: $(TARGET)
+	cp $(TARGET) ../output
+	cp start-mq-client.sh ../output
 
-lib-uv: output
-	make -C libuv-0.9/source
-	cp libuv-0.9/source/libuv.so output
+$(TARGET): $(OBJECT_FILES)
+	$(CC) $(OBJECT_FILES) -o $@ $(LDFLAGS)
 
-lib-uv-clean:
-	make -C libuv-0.9/source clean
-
-socket-server:
-	make -C socket-server all
-
-socket-server-clean:
-	make -C socket-server clean
-
-socket-client:
-	make -C socket-client all
-
-socket-client-clean:
-	make -C socket-client clean
-
-mq-server:
-	make -C mq-server all
-
-mq-server-clean:
-	make -C mq-server clean
-
-mq-client:
-	make -C mq-client all
-
-mq-client-clean:
-	make -C mq-client clean
-
-clean:  lib-uv-clean \
-		socket-server-clean socket-client-clean \
-		mq-server-clean \
-		output-clean
-
-.PHONY: output output-clean all clean \
-		lib-uv lib-uv-clean \
-		socket-server socket-server-clean \
-		socket-client socket-client-clean \
-		mq-server mq-server-clean \
-		mq-client mq-client-clean
+clean:
+	-rm -f *.o $(TARGET)

@@ -1,3 +1,4 @@
+#!/bin/bash
 # Copyright (c) 2013, William W.L. Chuang
 # All rights reserved.
 #
@@ -23,53 +24,4 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-all: lib-uv socket-server socket-client
-
-output:
-	@if [ ! -d "output" ]; then mkdir output; fi
-
-output-clean:
-	rm -rf output
-
-lib-uv: output
-	make -C libuv-0.9/source
-	cp libuv-0.9/source/libuv.so output
-
-lib-uv-clean:
-	make -C libuv-0.9/source clean
-
-socket-server:
-	make -C socket-server all
-
-socket-server-clean:
-	make -C socket-server clean
-
-socket-client:
-	make -C socket-client all
-
-socket-client-clean:
-	make -C socket-client clean
-
-mq-server:
-	make -C mq-server all
-
-mq-server-clean:
-	make -C mq-server clean
-
-mq-client:
-	make -C mq-client all
-
-mq-client-clean:
-	make -C mq-client clean
-
-clean:  lib-uv-clean \
-		socket-server-clean socket-client-clean \
-		mq-server-clean \
-		output-clean
-
-.PHONY: output output-clean all clean \
-		lib-uv lib-uv-clean \
-		socket-server socket-server-clean \
-		socket-client socket-client-clean \
-		mq-server mq-server-clean \
-		mq-client mq-client-clean
+LD_LIBRARY_PATH=`pwd` ./mq-server
